@@ -5,6 +5,7 @@ synopsis:
 license: "LGPLv3"
 depends: [
   "dune" {>= "2.8"}
+  "basis"
   "odoc" {with-doc}
 ]
 build: [
