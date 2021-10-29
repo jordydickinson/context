@@ -1,4 +1,4 @@
 (library
- (name context)
+ (public_name context)
  (libraries basis)
  (flags :standard -open Basis))
