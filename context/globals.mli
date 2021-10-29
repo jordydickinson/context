@@ -49,3 +49,7 @@ val switch: _ Name.t list -> 'a t -> 'a t
 (** [switch_opt] is like {!val:switch} but it returns [None] rather than raising
     an exception. *)
 val switch_opt: _ Name.t list -> 'a t -> 'a t option
+
+(** [pool path id globals] is the pool of indices/levels associated with the
+    identifier [id] qualified by [path] in [globals]. *)
+val pool: _ Name.t list -> Ident.t -> 'a t -> Local.pool

@@ -87,3 +87,7 @@ val fold_left: (Ident.t -> index -> 'acc -> 'a -> 'acc) -> 'acc -> 'a t -> 'acc
     identifiers is tail-recursive, but folding over the bindings of each
     identifier is not. *)
 val fold_right: (Ident.t -> level -> 'a -> 'acc -> 'acc) -> 'a t -> 'acc -> 'acc
+
+(** [pool id names] is the pool of De Bruijn indices/levels associated with the
+    identifier [id] in [names]. *)
+val pool: Ident.t -> 'a t -> Local.pool

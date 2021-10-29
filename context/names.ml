@@ -1,5 +1,6 @@
 module Index = Local.Index
 module Level = Local.Level
+module Pool = Local.Pool
 
 type +'a t = 'a Locals.t Ident.Map.t
 
@@ -96,3 +97,8 @@ let find name names = match find_opt name names with
 let mem name names = match Ident.Map.find_opt (Name.ident name) names with
 | None -> false
 | Some locals -> Locals.mem (Name.to_local name) locals
+
+let pool name names =
+  Ident.Map.find_opt name names
+  |> Option.value ~default:Locals.empty
+  |> Locals.pool

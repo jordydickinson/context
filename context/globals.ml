@@ -1,3 +1,5 @@
+module Index = Local.Index
+
 type +'a entry =
 | Leaf of 'a
 | Branch of 'a option * 'a t
@@ -85,3 +87,8 @@ let rec switch_opt path globals = match path with
 let switch path globals = match switch_opt path globals with
 | None -> raise Not_found
 | Some globals -> globals
+
+let pool path id globals =
+  switch_opt path globals
+  |> Option.value ~default:Names.empty
+  |> Names.pool id
