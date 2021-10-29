@@ -1,11 +1,11 @@
 (** De Bruijn indices *)
-type index = private int
+type index
 
 (** De Bruijn levels *)
-type level = private int
+type level
 
 (** "Pools" of debruijn indices/levels, for conversion *)
-type pool = private int
+type pool
 
 (** A De Bruijn index or level *)
 type t =
