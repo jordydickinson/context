@@ -2,7 +2,11 @@
 opam-version: "2.0"
 synopsis:
   "A library for manipulating De Bruijn variables, name(space)s, and contexts"
-license: "LGPLv3"
+maintainer: ["Jordy Dickinson <jordy.dickinson@icloud.com>"]
+authors: ["Jordy Dickinson <jordy.dickinson@icloud.com>"]
+license: "LGPL-3.0"
+homepage: "https://github.com/jordydickinson/context"
+bug-reports: "https://github.com/jordydickinson/context/issues"
 depends: [
   "dune" {>= "2.8"}
   "basis"
