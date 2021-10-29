@@ -56,7 +56,7 @@ let rec remove path id = match path with
     else Option.map (fun v -> Leaf v) v
   end
 
-let rec find_opt Qname.{ path; name } globals = match path with
+let rec find_opt Global.{ path; name } globals = match path with
 | [] ->
   begin match Names.find_opt name globals with
   | None | Some Branch (None, _) -> None

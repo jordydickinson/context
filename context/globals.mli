@@ -32,15 +32,15 @@ val remove: Ident.t list -> Ident.t -> 'a t -> 'a t
 
 (** [find name globals] is the value bound to [name] in [globals] or @raise
     Not_found if no such binding exists. *)
-val find: _ Qname.t -> 'a t -> 'a
+val find: _ Global.t -> 'a t -> 'a
 
 (** [find_opt] is like {!val:find}, but it returns [None] rather than raising
     an exception. *)
-val find_opt: _ Qname.t -> 'a t -> 'a option
+val find_opt: _ Global.t -> 'a t -> 'a option
 
 (** [mem name globals] is [true] if there is a value bound to [name] in
     [globals] and [false] otherwise. *)
-val mem: _ Qname.t -> 'a t -> bool
+val mem: _ Global.t -> 'a t -> bool
 
 (** [switch path globals] is a globals structure with all the bindings present
     at [path] or @raise Not_found if there are no bindings at [path]. *)
