@@ -1,7 +1,7 @@
-module Level = Debruijn.Level
-module Pool = Debruijn.Pool
+module Level = Local.Level
+module Pool = Local.Pool
 
-type pool = Debruijn.pool
+type pool = Local.pool
 
 type +'a t = { data: 'a Level.Map.t; pool: pool }
 
@@ -33,7 +33,7 @@ let find_index_opt i scope =
   let l = Pool.index_to_level scope.pool i in
   find_level_opt l scope
 
-let find_opt : Debruijn.t -> _ = function
+let find_opt (type a) : a Local.t -> _ = function
 | Level l -> find_level_opt l
 | Index i -> find_index_opt i
 
@@ -47,7 +47,7 @@ let remove_index i scope =
   let l = Pool.index_to_level scope.pool i in
   remove_level l scope
 
-let remove : Debruijn.t -> _ = function
+let remove (type a) : a Local.t -> _ = function
 | Level l -> remove_level l
 | Index i -> remove_index i
 
@@ -59,6 +59,6 @@ let update_index i f scope =
   let l = Pool.index_to_level scope.pool i in
   update_level l f scope
 
-let update : Debruijn.t -> _ = function
+let update (type a) : a Local.t -> _ = function
 | Level l -> update_level l
 | Index i -> update_index i

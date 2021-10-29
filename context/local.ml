@@ -2,11 +2,11 @@ type index = int
 type level = int
 type pool = int
 
-type t =
-| Level of int
-| Index of int
+type _ t =
+| Level : level -> level t
+| Index : index -> index t
 
-let equal db db' = match db, db' with
+let equal (type a) (db: a t) (db': a t) = match db, db' with
 | Level l, Level l' -> Int.equal l l'
 | Level _, _ -> false
 | Index i, Index i' -> Int.equal i i'
@@ -32,6 +32,7 @@ end
 
 module Pool =
 struct
+  type 'a db = 'a t
   type t = pool
 
   let empty = 0
@@ -63,7 +64,7 @@ struct
 
   let mem_level i pool = i < pool
 
-  let mem db pool = match db with
+  let mem (type a) (db: a db) pool = match db with
   | Level l -> mem_level l pool
   | Index i -> mem_index i pool
 
@@ -71,11 +72,11 @@ struct
 
   let level_to_index pool = Index.of_level ~size:pool
 
-  let to_level pool = function
+  let to_level (type a) pool : a db -> _ = function
   | Level l -> l
   | Index i -> index_to_level pool i
 
-  let to_index pool = function
+  let to_index (type a) pool : a db -> _ = function
   | Level l -> level_to_index pool l
   | Index i -> i
 end

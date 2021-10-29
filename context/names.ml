@@ -1,3 +1,6 @@
+module Index = Local.Index
+module Level = Local.Level
+
 type +'a t = 'a Locals.t Ident.Map.t
 
 type 'a change =
@@ -62,10 +65,10 @@ let fold_left f init names =
   let folder id locals acc =
     let folder (i, acc) x =
       let acc = f id i acc x in
-      let i = Debruijn.Index.succ i in
+      let i = Index.succ i in
       i, acc
     in 
-    let init = Debruijn.Index.of_int 0, acc in
+    let init = Index.of_int 0, acc in
     List.fold_left folder init Locals.(locals.elts)
     |> snd
   in
@@ -74,17 +77,17 @@ let fold_left f init names =
 let fold_right f = Ident.Map.fold begin fun id locals acc ->
   let folder x (l, acc) =
     let acc = f id l x acc in
-    let l = Debruijn.Level.succ l in
+    let l = Level.succ l in
     l, acc
   in
-  let init = Debruijn.Level.zero, acc in
+  let init = Level.zero, acc in
   List.fold_right folder Locals.(locals.elts) init
   |> snd
 end
 
 let find_opt name names = match Ident.Map.find_opt (Name.ident name) names with
 | None -> None
-| Some locals -> Locals.get_opt (Name.debruijn name) locals
+| Some locals -> Locals.get_opt (Name.to_local name) locals
 
 let find name names = match find_opt name names with
 | None -> raise Not_found
@@ -92,4 +95,4 @@ let find name names = match find_opt name names with
 
 let mem name names = match Ident.Map.find_opt (Name.ident name) names with
 | None -> false
-| Some locals -> Locals.mem (Name.debruijn name) locals
+| Some locals -> Locals.mem (Name.to_local name) locals

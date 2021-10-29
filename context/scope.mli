@@ -1,5 +1,5 @@
-module Level := Debruijn.Level
-type pool := Debruijn.pool
+module Level := Local.Level
+type pool := Local.pool
 
 (** A structure for associating arbitrary data with scopes. Unlike
     {!type:Locals.t}, this type supports random-access updates of its
@@ -30,15 +30,15 @@ val exit_opt: 'a t -> 'a t option
 
 (** [find i scope] finds the data associated with the scope at level/index [i]
     in [scope] or @raise Not_found if no such data exists. *)
-val find: Debruijn.t -> 'a t -> 'a
+val find: _ Local.t -> 'a t -> 'a
 
 (** [find_opt] is like {!val:find} but it returns [None] rather than raising an
     exception. *)
-val find_opt: Debruijn.t -> 'a t -> 'a option
+val find_opt: _ Local.t -> 'a t -> 'a option
 
 (** [remove i scope] is [scope] without the data associated with level/index [i]
     or just [scope] if no such data exists. *)
-val remove: Debruijn.t -> 'a t -> 'a t
+val remove: _ Local.t -> 'a t -> 'a t
 
 (** [update i f scope] updates the data associated with index/level [i] in
     [scope] according to the function [f]. In particular, if no data is
@@ -47,4 +47,4 @@ val remove: Debruijn.t -> 'a t -> 'a t
     will be removed; otherwise, if [f] return [Some v'], [v'] will be associated
     with [i]. Note that if [i] does not refer to an open scope, [scope] is
     returned unchanged and [f] is never called. *)
-val update: Debruijn.t -> ('a option -> 'a option) -> 'a t -> 'a t
+val update: _ Local.t -> ('a option -> 'a option) -> 'a t -> 'a t

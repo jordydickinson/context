@@ -8,11 +8,11 @@ type level
 type pool
 
 (** A De Bruijn index or level *)
-type t =
-| Level of level
-| Index of index
+type _ t =
+| Level : level -> level t
+| Index : index -> index t
 
-include Equatable.S with type t := t
+include Equatable.S1 with type 'a t := 'a t
 
 module Index:
 sig
@@ -56,7 +56,7 @@ end
 
 module Pool:
 sig
-  type db := t
+  type 'a db := 'a t
   type t = pool
 
   (** The empty pool *)
@@ -97,7 +97,7 @@ sig
   val mem_level: level -> t -> bool
 
   (** Test whether the given index or level is in the pool. *)
-  val mem: db -> t -> bool
+  val mem: _ db -> t -> bool
 
   (** [index_to_level pool i] is the level in [pool] corresponding to index [i]. *)
   val index_to_level: pool -> index -> level
@@ -108,10 +108,10 @@ sig
   (** [to_level pool db] is the level in [pool] corresponding to index/level
       [db].
     *)
-  val to_level: pool -> db -> level
+  val to_level: pool -> _ db -> level
 
   (** [to_index pool db] is the index in [pool] corresponding to index/level
       [db].
     *)
-  val to_index: pool -> db -> index
+  val to_index: pool -> _ db -> index
 end

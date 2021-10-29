@@ -1,5 +1,5 @@
-type index := Debruijn.index
-type level := Debruijn.level
+type index := Local.index
+type level := Local.level
 
 type _ t =
 | Indexed : Ident.t * index -> index t
@@ -16,6 +16,6 @@ val leveled : Ident.t -> level -> leveled
 
 val ident : 'a t -> Ident.t
 
-val debruijn : 'a t -> Debruijn.t
+val to_local : 'a t -> 'a Local.t
 
 val drop_ident : 'a t -> 'a

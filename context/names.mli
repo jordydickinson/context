@@ -1,3 +1,6 @@
+type index := Local.index
+type level := Local.level
+
 (** A multimap-like structure for associating data with names and managing their
     levels and indices. *)
 type +'a t
@@ -77,10 +80,10 @@ val mem: _ Name.t -> 'a t -> bool
     Identifiers are traversed in lexographically increasing order, and for
     each identifier, bindings are traversed from most-recently to least-recently
     bound. Tail-recursive. *)
-val fold_left: (Ident.t -> Debruijn.index -> 'acc -> 'a -> 'acc) -> 'acc -> 'a t -> 'acc
+val fold_left: (Ident.t -> index -> 'acc -> 'a -> 'acc) -> 'acc -> 'a t -> 'acc
 
 (** [fold_right] is like [fold_left], but for each identifier, bindings are
     traversed from least-recently to most-recently bound. Folding over
     identifiers is tail-recursive, but folding over the bindings of each
     identifier is not. *)
-val fold_right: (Ident.t -> Debruijn.level -> 'a -> 'acc -> 'acc) -> 'a t -> 'acc -> 'acc
+val fold_right: (Ident.t -> level -> 'a -> 'acc -> 'acc) -> 'a t -> 'acc -> 'acc

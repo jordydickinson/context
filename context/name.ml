@@ -1,5 +1,5 @@
-module Index = Debruijn.Index
-module Level = Debruijn.Level
+module Index = Local.Index
+module Level = Local.Level
 
 type index = Index.t
 type level = Level.t
@@ -19,7 +19,7 @@ let ident (type a) : a t -> _ = function
 | Indexed (id, _) -> id
 | Leveled (id, _) -> id
 
-let debruijn (type a) : a t -> Debruijn.t = function
+let to_local (type a) : a t -> a Local.t = function
 | Indexed (_, i) -> Index i
 | Leveled (_, l) -> Level l
 

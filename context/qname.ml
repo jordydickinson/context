@@ -1,5 +1,5 @@
-type index = Debruijn.index
-type level = Debruijn.level
+type index = Local.index
+type level = Local.level
 
 type 'a t =
   { path: 'a Name.t list
