@@ -34,8 +34,8 @@ let find_index_opt i scope =
   find_level_opt l scope
 
 let find_opt (type a) : a Local.t -> _ = function
-| Level l -> find_level_opt l
-| Index i -> find_index_opt i
+| Free l -> find_level_opt l
+| Bound i -> find_index_opt i
 
 let find i scope = match find_opt i scope with
 | None -> raise Not_found
@@ -48,8 +48,8 @@ let remove_index i scope =
   remove_level l scope
 
 let remove (type a) : a Local.t -> _ = function
-| Level l -> remove_level l
-| Index i -> remove_index i
+| Free l -> remove_level l
+| Bound i -> remove_index i
 
 let update_level l f scope =
   if not @@ Pool.mem_level l scope.pool then scope else
@@ -60,5 +60,5 @@ let update_index i f scope =
   update_level l f scope
 
 let update (type a) : a Local.t -> _ = function
-| Level l -> update_level l
-| Index i -> update_index i
+| Free l -> update_level l
+| Bound i -> update_index i

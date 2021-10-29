@@ -66,8 +66,8 @@ let lth_opt i locals =
   ith_opt i locals
 
 let get_opt (type a) : a Local.t -> _ = function
-| Index i -> ith_opt i
-| Level l -> lth_opt l
+| Bound i -> ith_opt i
+| Free l -> lth_opt l
 
 let get i locals = match get_opt i locals with
 | None -> raise Not_found
