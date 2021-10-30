@@ -20,8 +20,8 @@ let ident (type a) : a t -> _ = function
 | Leveled (id, _) -> id
 
 let to_local (type a) : a t -> a Local.t = function
-| Indexed (_, i) -> Bound i
-| Leveled (_, l) -> Free l
+| Indexed (_, i) -> Index i
+| Leveled (_, l) -> Level l
 
 let drop_ident (type a) : a t -> a = function
 | Indexed (_, i) -> i

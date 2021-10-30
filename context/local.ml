@@ -3,14 +3,14 @@ type level = int
 type pool = int
 
 type _ t =
-| Bound : index -> index t
-| Free : level -> level t
+| Index : index -> index t
+| Level : level -> level t
 
 let equal (type a) (db: a t) (db': a t) = match db, db' with
-| Free l, Free l' -> Int.equal l l'
-| Free _, _ -> false
-| Bound i, Bound i' -> Int.equal i i'
-| Bound _, _ -> false
+| Level l, Level l' -> Int.equal l l'
+| Level _, _ -> false
+| Index i, Index i' -> Int.equal i i'
+| Index _, _ -> false
 
 module Index =
 struct
@@ -65,8 +65,8 @@ struct
   let mem_level i pool = i < pool
 
   let mem (type a) (db: a db) pool = match db with
-  | Free l -> mem_level l pool
-  | Bound i -> mem_index i pool
+  | Level l -> mem_level l pool
+  | Index i -> mem_index i pool
 
   let level_of_index_opt pool i =
     if not @@ mem_index i pool then None else Option.some @@
@@ -85,16 +85,16 @@ struct
   | Some i -> i
 
   let to_level_opt (type a) pool : a db -> _ = function
-  | Free l -> Some l
-  | Bound i -> level_of_index_opt pool i
+  | Level l -> Some l
+  | Index i -> level_of_index_opt pool i
 
   let to_level pool db = match to_level_opt pool db with
   | None -> invalid_arg "not in pool"
   | Some l -> l
 
   let to_index_opt (type a) pool : a db -> _ = function
-  | Free l -> index_of_level_opt pool l
-  | Bound i -> Some i
+  | Level l -> index_of_level_opt pool l
+  | Index i -> Some i
 
   let to_index pool db = match to_index_opt pool db with
   | None -> invalid_arg "not in pool"

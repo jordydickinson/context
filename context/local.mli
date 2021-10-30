@@ -9,8 +9,8 @@ type pool
 
 (** A De Bruijn index or level *)
 type _ t =
-| Bound : index -> index t
-| Free : level -> level t
+| Index : index -> index t
+| Level : level -> level t
 
 include Equatable.S1 with type 'a t := 'a t
 
