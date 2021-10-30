@@ -92,3 +92,23 @@ let pool path id globals =
   switch_opt path globals
   |> Option.value ~default:Names.empty
   |> Names.pool id
+
+let resolve_path_opt path globals =
+  let rec resolve_path_opt' globals = let open Option.O in function
+  | [] -> Some []
+  | name :: path ->
+    let* name = Names.resolve_opt name globals in
+    let+ path = resolve_path_opt' (switch [name] globals) path in
+    name :: path
+  in
+  resolve_path_opt' globals path
+
+let resolve_opt Global.{ path; name } globals =
+  let open Option.O in
+  let* path = resolve_path_opt path globals in
+  let+ name = Names.resolve_opt name (switch path globals) in
+  Global.make path name
+
+let resolve global globals = match resolve_opt global globals with
+| None -> raise Not_found
+| Some global -> global

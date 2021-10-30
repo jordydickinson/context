@@ -91,3 +91,11 @@ val fold_right: (Ident.t -> level -> 'a -> 'acc -> 'acc) -> 'a t -> 'acc -> 'acc
 (** [pool id names] is the pool of De Bruijn indices/levels associated with the
     identifier [id] in [names]. *)
 val pool: Ident.t -> 'a t -> Local.pool
+
+(** [resolve name names] is the leveled equivalent of [name] in [names] or
+    @raise Not_found if [name] is not in [names]. *)
+val resolve: _ Name.t -> 'a t -> Name.leveled
+
+(** [resolve_opt] is like {!val:resolve} but it returns [None] rather than
+    raising an exception. *)
+val resolve_opt: _ Name.t -> 'a t -> Name.leveled option

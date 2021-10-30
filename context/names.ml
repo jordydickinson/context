@@ -102,3 +102,13 @@ let pool name names =
   Ident.Map.find_opt name names
   |> Option.value ~default:Locals.empty
   |> Locals.pool
+
+let resolve_opt name names =
+  let id = Name.ident name in
+  let pool = pool id names in
+  let l = Pool.to_level_opt pool @@ Name.to_local name in
+  Option.map (Name.leveled id) l
+
+let resolve name names = match resolve_opt name names with
+| None -> raise Not_found
+| Some name -> name
