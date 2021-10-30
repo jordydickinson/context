@@ -54,10 +54,10 @@ val switch_opt: _ Name.t list -> 'a t -> 'a t option
     identifier [id] qualified by [path] in [globals]. *)
 val pool: _ Name.t list -> Ident.t -> 'a t -> Local.pool
 
-(** [resolve name globals] is the leveled equivalent of [name] in [globals] or
+(** [fix name globals] is the leveled equivalent of [name] in [globals] or
     @raise Not_found if [name] is not in [globals]. *)
-val resolve: _ Global.t -> 'a t -> Global.leveled
+val fix: _ Global.t -> 'a t -> Global.leveled
 
-(** [resolve_opt] is like {!val:resolve} but it returns [None] rather than
-    raising an exception. *)
-val resolve_opt: _ Global.t -> 'a t -> Global.leveled option
+(** [fix_opt] is like {!val:fix} but it returns [None] rather than raising an
+    exception. *)
+val fix_opt: _ Global.t -> 'a t -> Global.leveled option
