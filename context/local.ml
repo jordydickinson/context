@@ -68,15 +68,35 @@ struct
   | Free l -> mem_level l pool
   | Bound i -> mem_index i pool
 
-  let index_to_level pool = Level.of_index ~size:pool
+  let level_of_index_opt pool i =
+    if not @@ mem_index i pool then None else Option.some @@
+    Level.of_index ~size:pool i
 
-  let level_to_index pool = Index.of_level ~size:pool
+  let level_of_index pool i = match level_of_index_opt pool i with
+  | None -> invalid_arg "index not in pool"
+  | Some l -> l
 
-  let to_level (type a) pool : a db -> _ = function
-  | Free l -> l
-  | Bound i -> index_to_level pool i
+  let index_of_level_opt pool l =
+    if not @@ mem_level l pool then None else Option.some @@
+    Index.of_level ~size:pool l
 
-  let to_index (type a) pool : a db -> _ = function
-  | Free l -> level_to_index pool l
-  | Bound i -> i
+  let index_of_level pool l = match index_of_level_opt pool l with
+  | None -> invalid_arg "level not in pool"
+  | Some i -> i
+
+  let to_level_opt (type a) pool : a db -> _ = function
+  | Free l -> Some l
+  | Bound i -> level_of_index_opt pool i
+
+  let to_level pool db = match to_level_opt pool db with
+  | None -> invalid_arg "not in pool"
+  | Some l -> l
+
+  let to_index_opt (type a) pool : a db -> _ = function
+  | Free l -> index_of_level_opt pool l
+  | Bound i -> Some i
+
+  let to_index pool db = match to_index_opt pool db with
+  | None -> invalid_arg "not in pool"
+  | Some l -> l
 end

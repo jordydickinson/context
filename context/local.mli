@@ -25,12 +25,8 @@ sig
   (** Create an index from an integer with the same value *)
   val of_int: int -> t
 
-  (** [to_int i] is the same as [(i :> int)]. *)
+  (** [to_int i] is a non-negative integer with the same value as [i]. *)
   val to_int: t -> int
-
-  (** [of_level ~size l] an index from level [l], assuming a context of size
-      [size]. *)
-  val of_level: size:int -> level -> t
 
   include Equatable.S with type t := t
   include Comparable.S with type t := t
@@ -42,10 +38,6 @@ sig
 
   (** [zero] is the least possible level. *)
   val zero: t
-
-  (** [of_index ~size i] creates a level from [i], assuming a context of size
-      [size]. *)
-  val of_index: size:int -> index -> t
 
   (** [succ l] is the successor level of [l]. *)
   val succ: t -> t
@@ -99,19 +91,35 @@ sig
   (** Test whether the given index or level is in the pool. *)
   val mem: _ db -> t -> bool
 
-  (** [index_to_level pool i] is the level in [pool] corresponding to index [i]. *)
-  val index_to_level: pool -> index -> level
+  (** [index_of_level pool l] is the index corresponding to [l] in [pool] or
+      @raise Invalid_arg if [l] is not in [pool]. *)
+  val index_of_level: t -> level -> index
 
-  (** [level_to_index pool l] is the index in [pool] corresponding to level [l]. *)
-  val level_to_index: pool -> level -> index
+  (** [index_of_level_opt] is like {!val:index_of_level} but it returns [None]
+      rather than raising an exception. *)
+  val index_of_level_opt: t -> level -> index option
 
-  (** [to_level pool db] is the level in [pool] corresponding to index/level
-      [db].
-    *)
-  val to_level: pool -> _ db -> level
+  (** [level_of_index pool i] is the level corresponding to [i] in [pool] or
+      @raise Invalid_arg if [i] is not in [pool]. *)
+  val level_of_index: t -> index -> level
 
-  (** [to_index pool db] is the index in [pool] corresponding to index/level
-      [db].
-    *)
-  val to_index: pool -> _ db -> index
+  (** [level_of_index_opt] is like {!val:level_of_index} but it returns [None]
+      rather than raising an exception. *)
+  val level_of_index_opt: t -> index -> level option
+
+  (** [to_index] is like {!val:index_of_level}, but it reduces to the identity
+      function when provided an index. *)
+  val to_index: t -> _ db -> index
+
+  (** [to_index_opt] is like {!val:to_index} but it returns [None] rather than
+      raising an exception. *)
+  val to_index_opt: t -> _ db -> index option
+
+  (** [to_level] is like {!val:level_of_index}, but it reduces to the identity
+      function when provided a level. *)
+  val to_level: t -> _ db -> level
+
+  (** [to_level_opt] is like {!val:to_level} but it returns [None] rather than
+      raising an exception. *)
+  val to_level_opt: t -> _ db -> level option
 end

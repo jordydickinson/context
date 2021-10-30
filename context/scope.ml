@@ -30,8 +30,8 @@ let exit scope = match exit_opt scope with
 let find_level_opt l scope = Level.Map.find_opt l scope.data
 
 let find_index_opt i scope =
-  let l = Pool.index_to_level scope.pool i in
-  find_level_opt l scope
+  let l = Pool.level_of_index_opt scope.pool i in
+  Option.bind l (Fun.flip find_level_opt scope)
 
 let find_opt (type a) : a Local.t -> _ = function
 | Free l -> find_level_opt l
@@ -43,9 +43,9 @@ let find i scope = match find_opt i scope with
 
 let remove_level l scope = { scope with data = Level.Map.remove l scope.data }
 
-let remove_index i scope =
-  let l = Pool.index_to_level scope.pool i in
-  remove_level l scope
+let remove_index i scope = match Pool.level_of_index_opt scope.pool i with
+| None -> scope
+| Some l -> remove_level l scope
 
 let remove (type a) : a Local.t -> _ = function
 | Free l -> remove_level l
@@ -55,9 +55,9 @@ let update_level l f scope =
   if not @@ Pool.mem_level l scope.pool then scope else
   { scope with data = Level.Map.update l f scope.data }
 
-let update_index i f scope =
-  let l = Pool.index_to_level scope.pool i in
-  update_level l f scope
+let update_index i f scope = match Pool.level_of_index_opt scope.pool i with
+| None -> scope
+| Some l -> update_level l f scope
 
 let update (type a) : a Local.t -> _ = function
 | Free l -> update_level l

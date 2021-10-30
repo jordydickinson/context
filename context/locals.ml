@@ -57,13 +57,13 @@ let ith i locals = List.nth locals.elts (Index.to_int i)
 
 let ith_opt i locals = List.nth_opt locals.elts (Index.to_int i)
 
-let lth i locals =
-  let i = Pool.level_to_index locals.pool i in
-  ith i locals
+let lth_opt l locals = match Pool.index_of_level_opt locals.pool l with
+| None -> None
+| Some i -> ith_opt i locals
 
-let lth_opt i locals =
-  let i = Pool.level_to_index locals.pool i in
-  ith_opt i locals
+let lth l locals = match lth_opt l locals with
+| None -> raise Not_found
+| Some v -> v
 
 let get_opt (type a) : a Local.t -> _ = function
 | Bound i -> ith_opt i
@@ -98,12 +98,12 @@ let findi pred locals = match findi_opt pred locals with
 
 let findl_opt pred locals =
   let pred' i x =
-    let l = Pool.index_to_level locals.pool i in
+    let l = Pool.level_of_index locals.pool i in
     pred l x
   in
   match findi_opt pred' locals with
   | None -> None
-  | Some (i, x) -> Some (Pool.index_to_level locals.pool i, x)
+  | Some (i, x) -> Some (Pool.level_of_index locals.pool i, x)
 
 let findl pred locals = match findl_opt pred locals with
 | None -> raise Not_found
