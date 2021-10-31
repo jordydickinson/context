@@ -38,3 +38,6 @@ let drop ctx = match drop_opt ctx with
 | None -> raise Not_found
 | Some ctx -> ctx
 
+let map_locals f ctx =
+  let vars = Vars.update_locals (Locals.map f) ctx.vars in
+  { ctx with vars }

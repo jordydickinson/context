@@ -46,3 +46,8 @@ val drop: ('l, 'g, 's) t -> ('l, 'g, 's) t
 (** [drop_opt] is like {!val:drop} but it returns [None] rather than raising an
     exception. *)
 val drop_opt: ('l, 'g, 's) t -> ('l, 'g, 's) t option
+
+(** [map_locals f ctx] is a context with all the bindings and scopes of [ctx],
+    but all local bindings have been replaced by the application of [f] to the
+    binding. *)
+val map_locals: ('a -> 'b) -> ('a, 'g, 's) t -> ('b, 'g, 's) t
