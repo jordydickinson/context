@@ -22,6 +22,10 @@ sig
       [of_int (to_int i + 1)]. *)
   val succ: t -> t
 
+  (** [pred i] is the predecessor index of [i] or @raise Invalid_arg if [i] has
+      no predecessor. *)
+  val pred: t -> t
+
   (** Create an index from an integer with the same value *)
   val of_int: int -> t
 

@@ -20,6 +20,10 @@ struct
 
   let to_int i = i
 
+  let pred i =
+    if i = 0 then invalid_arg "no predecessor";
+    i - 1
+
   let of_level ~size i = size - (i + 1)
 end
 
