@@ -47,6 +47,8 @@ struct
 
   let size pool = pool
 
+  let of_level l = l + 1
+
   let max_level_opt pool =
     assert (pool >= 0);
     if pool = 0 then None else Some (pool - 1)

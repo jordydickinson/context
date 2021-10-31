@@ -68,6 +68,10 @@ sig
   (** The number of De Bruijn indices/levels in this pool *)
   val size: t -> int
 
+  (** [of_level l] is a pool which has exactly as many variables are necessary
+      for [l] to be in the pool. *)
+  val of_level: level -> t
+
   (** [max_level pool] is the maximum De Bruijn level in [pool] or @raise
       Failure if [pool] is empty. *)
   val max_level: t -> level
