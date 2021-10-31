@@ -1,6 +1,6 @@
 (** A type providing read-only access to globals and read-write access to locals
     and scope data while keeping locals and scope data in-sync. *)
-type (+'local, +'global, 'scope) t = private
+type (+'local, +'global, +'scope) t = private
   { vars: ('local, 'global) Vars.t
   ; scope: 'scope Scope.t
   }
