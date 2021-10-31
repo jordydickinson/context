@@ -61,6 +61,10 @@ sig
       present in [pool2] and [false] otherwise. *)
   val subpool: t -> t -> bool
 
+  (** [union pool1 pool2] is a pool containing the variables of both [pool1]
+      and [pool2]. *)
+  val union: t -> t -> t
+
   (** The number of De Bruijn indices/levels in this pool *)
   val size: t -> int
 
