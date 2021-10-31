@@ -122,4 +122,6 @@ sig
   (** [to_level_opt] is like {!val:to_level} but it returns [None] rather than
       raising an exception. *)
   val to_level_opt: t -> _ db -> level option
+
+  include Equatable.S with type t := t
 end

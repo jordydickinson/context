@@ -39,6 +39,8 @@ struct
 
   let is_empty pool = pool = 0
 
+  let equal p1 p2 = Int.equal p1 p2
+
   let size pool = pool
 
   let max_level_opt pool =
