@@ -57,6 +57,10 @@ sig
   (** Test whether a pool is empty *)
   val is_empty: t -> bool
 
+  (** [subpool pool1 pool2] is [true] if [pool1] contains all the variables
+      present in [pool2] and [false] otherwise. *)
+  val subpool: t -> t -> bool
+
   (** The number of De Bruijn indices/levels in this pool *)
   val size: t -> int
 

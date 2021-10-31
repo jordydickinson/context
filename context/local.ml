@@ -41,6 +41,8 @@ struct
 
   let equal p1 p2 = Int.equal p1 p2
 
+  let subpool p1 p2 = p1 < p2
+
   let size pool = pool
 
   let max_level_opt pool =
