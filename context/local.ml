@@ -63,14 +63,14 @@ struct
 
   let next_level pool = pool
 
-  let extend pool = pool + 1
+  let fill ?(amt = 1) pool =
+    if amt < 0 then invalid_arg "negative amt";
+    pool + amt
 
-  let extend_level pool = pool, pool + 1
-
-  let shrink pool =
-    if pool > 0
-    then pool - 1
-    else failwith "cannot shrink empty pool"
+  let drain ?(amt = 1) pool =
+    if amt < 0 then invalid_arg "negative amt";
+    if pool < amt then failwith "pool size too low";
+    pool - amt
 
   let mem_index i pool = i < pool
 

@@ -46,17 +46,14 @@ module Space: sig
       empty. *)
   val pool: Ident.t -> t -> pool
 
-  (** [extend id space] is [space] with an additional name identified by [id]
-      at De Bruijn index 0. *)
-  val extend: Ident.t -> t -> t
+  (** [add id space] is [space] with an additional name identified by [id]. If
+      a name with this [id] already exists, it is shadowed. *)
+  val add: Ident.t -> t -> t
 
-  (** [shrink id space] is [space] with the most-recently-added name identified
-      by [id] removed, or @raise Not_found if no such name exists. *)
-  val shrink: Ident.t -> t -> t
-
-  (** [shrink_opt] is like {!val:shrink} but it returns [None] rather than
-      raising an exception. *)
-  val shrink_opt: Ident.t -> t -> t option
+  (** [remove id space] is [space] with the most-recently-{!val:add}ed name with
+      identifier [id] removed. If no such name existed, [space] is returned
+      unchanged.  *)
+  val remove: Ident.t -> t -> t
 
   (** [mem name space] is [true] if [name] is a member of [space]. *)
   val mem: _ name -> t -> bool

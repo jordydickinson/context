@@ -22,7 +22,7 @@ let elts locals = locals.elts
 
 let add x locals =
   let elts = x :: locals.elts
-  and pool = Pool.extend locals.pool in
+  and pool = Pool.fill locals.pool in
   { elts; pool }
 
 let singleton x = add x empty
@@ -38,7 +38,7 @@ let top locals = match top_opt locals with
 let pop_opt locals = match locals.elts with
 | [] -> None
 | x :: elts ->
-  let locals = { elts; pool = Pool.shrink locals.pool } in
+  let locals = { elts; pool = Pool.drain locals.pool } in
   Some (x, locals)
 
 let pop locals = match pop_opt locals with
@@ -47,7 +47,7 @@ let pop locals = match pop_opt locals with
 
 let drop_opt locals = match locals.elts with
 | [] -> None
-| _ :: elts -> Some { elts; pool = Pool.shrink locals.pool }
+| _ :: elts -> Some { elts; pool = Pool.drain locals.pool }
 
 let drop locals = match drop_opt locals with
 | None -> failwith "drop empty"

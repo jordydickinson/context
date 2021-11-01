@@ -87,16 +87,20 @@ sig
   (** [next_level pool] is one level past [max_level pool]. *)
   val next_level: t -> level
 
-  (** Extend the pool with a new variable. *)
-  val extend: t -> t
+  (** [fill ?amt pool] is [pool] extended with [amt] new variables. If [amt] is
+      not provided, it defaults to [1].
 
-  (** Extend the pool with a new variable and return it as a level. *)
-  val extend_level: t -> level * t
+      @raise Invalid_arg if [amt] is negative.
+   *)
+  val fill: ?amt:int -> t -> t
 
-  (** [shrink pool] is [pool] with one variable removed or @raise Failure if
-      [pool] is empty.
+  (** [drain ?amt pool] is [pool] with [amt] fewer variables. If [amt] is not
+      provided, it defaults to [1].
+
+      @raise Invalid_arg if [amt] is negative.
+      @raise Failure if [pool] has fewer than [amt] variables.
     *)
-  val shrink: t -> t
+  val drain: ?amt:int -> t -> t
 
   (** Test whether the given index is in the pool. *)
   val mem_index: index -> t -> bool

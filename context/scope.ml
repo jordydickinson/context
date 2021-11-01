@@ -10,9 +10,10 @@ let root = { data = Level.Map.empty; pool = Pool.empty }
 let is_root scope = Pool.is_empty scope.pool
 
 let enter ?data scope = match data with
-| None -> { scope with pool = Pool.extend scope.pool }
+| None -> { scope with pool = Pool.fill scope.pool }
 | Some v ->
-  let l, pool = Pool.extend_level scope.pool in
+  let l = Pool.next_level scope.pool in
+  let pool = Pool.fill scope.pool in
   let data = Level.Map.add l v scope.data in
   { data; pool }
 
@@ -20,7 +21,7 @@ let exit_opt scope = match Pool.max_level_opt scope.pool with
 | None -> None
 | Some l ->
   let data = Level.Map.remove l scope.data in
-  let pool = Pool.shrink scope.pool in
+  let pool = Pool.drain scope.pool in
   Some { data; pool }
 
 let exit scope = match exit_opt scope with

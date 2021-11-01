@@ -55,19 +55,17 @@ module Space = struct
     Ident.Map.find_opt id space
     |> Option.value ~default:Pool.empty
 
-  let extend id = Ident.Map.update id begin function
-  | None -> Some (Pool.extend Pool.empty)
-  | Some pool -> Some (Pool.extend pool)
+  let add id = Ident.Map.update id begin function
+  | None -> Some (Pool.fill Pool.empty)
+  | Some pool -> Some (Pool.fill pool)
   end
 
-  let shrink id = Ident.Map.update id begin function
-  | None -> raise Not_found
+  let remove id = Ident.Map.update id begin function
+  | None -> None
   | Some pool ->
-    let pool = Pool.shrink pool in
+    let pool = Pool.drain pool in
     if Pool.is_empty pool then None else Some pool
   end
-
-  let shrink_opt id space = try Some (shrink id space) with Not_found -> None
 
   let mem name space = match Ident.Map.find_opt (ident name) space with
   | None -> false
