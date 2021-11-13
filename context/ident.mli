@@ -11,4 +11,3 @@ include Stringable.S with type t := t
 include Pretty.S with type t := t
 include Equatable.S with type t := t
 include Comparable.S with type t := t
-include Sexpable.S with type t := t
