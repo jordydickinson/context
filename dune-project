@@ -1,5 +1,6 @@
 (lang dune 2.8)
 (name context)
+(version 0.1.0)
 (generate_opam_files true)
 
 (package
