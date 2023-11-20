@@ -36,6 +36,35 @@ let equal (type a) (x: a t) (y: a t) : bool = match x, y with
 | Leveled (id, l), Leveled (id', l') -> Ident.equal id id' && Level.equal l l'
 | Leveled _, _ -> false
 
+let compare (type a) (x: a t) (y: a t) : int =
+  let cmp_id = Ident.compare (ident x) (ident y) in
+  if cmp_id <> 0 then cmp_id else
+  Local.compare (to_local x) (to_local y)
+
+module Indexed = struct
+  module T = struct
+    type t = indexed
+
+    let equal = equal
+    let compare = compare
+  end
+  include T
+
+  include Comparable.Make (T)
+end
+
+module Leveled = struct
+  module T = struct
+    type t = leveled
+
+    let equal = equal
+    let compare = compare
+  end
+  include T
+
+  include Comparable.Make (T)
+end
+
 module Space = struct
   type t = space
 

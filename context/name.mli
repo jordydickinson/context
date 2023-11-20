@@ -23,6 +23,22 @@ val to_local : 'a t -> 'a Local.t
 
 val drop_ident : 'a t -> 'a
 
+val compare : 'a t -> 'a t -> int
+
+module Indexed: sig
+  type t = indexed
+
+  include Equatable.S with type t := t
+  include Comparable.S with type t := t
+end
+
+module Leveled: sig
+  type t = leveled
+
+  include Equatable.S with type t := t
+  include Comparable.S with type t := t
+end
+
 module Space: sig
   type 'a name := 'a t
   type t = space

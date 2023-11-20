@@ -12,6 +12,16 @@ let equal (type a) (db: a t) (db': a t) = match db, db' with
 | Index i, Index i' -> Int.equal i i'
 | Index _, _ -> false
 
+let compare (type a) (db: a t) (db': a t) = match db, db' with
+| Level l, Level l' -> Int.compare l l'
+| Index i, Index i' -> Int.compare i i'
+| Level _, Index _ | Index _, Level _ ->
+  (* These cases are technically possible within this module implementation due
+     to the fact that [index = int = level] and so [index t = level t], but
+     outside this file these types are abstract, and hence these cases are never
+     reachable. *)
+  assert false
+
 module Index =
 struct
   include Int

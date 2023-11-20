@@ -13,3 +13,19 @@ type indexed = index t
 type leveled = level t
 
 val make: 'a Name.t list -> 'a Name.t -> 'a t
+
+val compare: 'a t -> 'a t -> int
+
+module Indexed: sig
+  type t = indexed
+
+  include Equatable.S with type t := t
+  include Comparable.S with type t := t
+end
+
+module Leveled: sig
+  type t = leveled
+
+  include Equatable.S with type t := t
+  include Comparable.S with type t := t
+end
