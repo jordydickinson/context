@@ -12,6 +12,9 @@ type _ t =
 | Index : index -> index t
 | Level : level -> level t
 
+type indexed = index t
+type leveled = level t
+
 val compare : 'a t -> 'a t -> int
 
 include Equatable.S1 with type 'a t := 'a t

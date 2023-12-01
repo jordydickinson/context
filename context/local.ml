@@ -6,6 +6,9 @@ type _ t =
 | Index : index -> index t
 | Level : level -> level t
 
+type indexed = index t
+type leveled = level t
+
 let equal (type a) (db: a t) (db': a t) = match db, db' with
 | Level l, Level l' -> Int.equal l l'
 | Level _, _ -> false
