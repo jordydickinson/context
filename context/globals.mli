@@ -67,3 +67,9 @@ val fix_opt: _ Global.t -> 'a t -> Global.leveled option
 (** [iter f globals] applies [f] to every element of [globals] in unspecified
     order. *)
 val iter: (Ident.t list -> Ident.t -> index -> 'a -> unit) -> 'a t -> unit
+
+(** [fold f init globals] folds over the bindings in [globals] using the
+    function [f] and [init] as the initial value for the accumulator in
+    unspecified order. *)
+val fold: (Ident.t list -> Ident.t -> index -> 'acc -> 'a -> 'acc) -> 'acc
+  -> 'a t -> 'acc

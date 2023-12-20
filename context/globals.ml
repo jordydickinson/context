@@ -123,3 +123,15 @@ let iter f =
     end
   in
   iter' []
+
+let fold f =
+  let rec fold' path =
+    Names.fold_left begin fun id index acc -> function
+    | Leaf x -> f path id index acc x
+    | Branch (None, globals) -> fold' (path @ [id]) acc globals
+    | Branch (Some x, globals) ->
+      let acc = f path id index acc x in
+      fold' (path @ [id]) acc globals
+    end
+  in
+  fold' []
