@@ -79,6 +79,10 @@ val ith_opt: index -> 'a t -> 'a option
     exception. *)
 val lth_opt: level -> 'a t -> 'a option
 
+val iter: ('a -> unit) -> 'a t -> unit
+
+val iteri: (index -> 'a -> unit) -> 'a t -> unit
+
 val map: ('a -> 'b) -> 'a t -> 'b t
 
 val find: ('a -> bool) -> 'a t -> 'a

@@ -1,3 +1,5 @@
+type index := Local.index
+
 (** A structure for associating data with qualified names. *)
 type +'a t
 
@@ -61,3 +63,7 @@ val fix: _ Global.t -> 'a t -> Global.leveled
 (** [fix_opt] is like {!val:fix} but it returns [None] rather than raising an
     exception. *)
 val fix_opt: _ Global.t -> 'a t -> Global.leveled option
+
+(** [iter f globals] applies [f] to every element of [globals] in unspecified
+    order. *)
+val iter: (Ident.t list -> Ident.t -> index -> 'a -> unit) -> 'a t -> unit

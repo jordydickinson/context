@@ -75,6 +75,10 @@ let get i locals = match get_opt i locals with
 
 let mem i locals = Pool.mem i locals.pool
 
+let iter f xs = List.iter f xs.elts
+
+let iteri f xs = List.iteri (fun i -> f (Local.Index.of_int i)) xs.elts
+
 let map f xs = { xs with elts = List.map f xs.elts }
 
 let find pred locals = List.find pred locals.elts

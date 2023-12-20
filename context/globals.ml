@@ -112,3 +112,14 @@ let fix_opt Global.{ path; name } globals =
 let fix global globals = match fix_opt global globals with
 | None -> raise Not_found
 | Some global -> global
+
+let iter f =
+  let rec iter' path =
+    Names.iter begin fun id index -> function
+    | Leaf x -> f path id index x
+    | Branch (x, globals) ->
+      Option.iter (f path id index) x;
+      iter' (path @ [id]) globals
+    end
+  in
+  iter' []

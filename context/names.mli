@@ -75,6 +75,12 @@ val find_opt: _ Name.t -> 'a t -> 'a option
     [false] otherwise. *)
 val mem: _ Name.t -> 'a t -> bool
 
+(** [iter f names] iterates over the bindings in [names], applying [f] to each
+    binding. Identifiers are traversed in lexicographically increasing order,
+    and for each identifier, bindings are traversed from most-recently to least-
+    recently bound. Tail-recursive. *)
+val iter: (Ident.t -> index -> 'a -> unit) -> 'a t -> unit
+
 (** [fold_left f init names] folds over the bindings in [names] using the
     function [f] and [init] as the initial value for the accumulator.
     Identifiers are traversed in lexographically increasing order, and for

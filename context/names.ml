@@ -62,6 +62,8 @@ let import names = names |> Ident.Map.union begin fun _ locals1 locals2 ->
   Some (List.fold_left (Fun.flip Locals.add) locals2 locals1.elts)
 end
 
+let iter f = Ident.Map.iter (fun id locals -> Locals.iteri (f id) locals)
+
 let fold_left f init names =
   let folder id locals acc =
     let folder (i, acc) x =
