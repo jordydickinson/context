@@ -27,18 +27,27 @@ let rec add path id v = match path with
   | Some Branch (v', globals) -> Some (Branch (v', add path id v globals))
   end
 
-let rec import path ns = match path with
+let rec includ path ns = match path with
 | [] ->
   ns |> Names.fold_right begin fun id _ -> function
   | Leaf v -> add [] id v
-  | Branch (None, ns') -> import [id] ns'
-  | Branch (Some v, ns') -> fun ns -> import [] ns' ns |> add [] id v
+  | Branch (None, ns') -> includ [id] ns'
+  | Branch (Some v, ns') -> fun ns -> includ [] ns' ns |> add [] id v
   end
 | step :: path ->
   Names.update step begin function
   | None -> Some (Branch (None, qualify path ns))
   | Some Leaf v -> Some (Branch (Some v, qualify path ns))
-  | Some Branch (v, globals) -> Some (Branch (v, import path ns globals))
+  | Some Branch (v, globals) -> Some (Branch (v, includ path ns globals))
+  end
+
+let rec import path id ns = match path with
+| [] -> Names.add id (Branch (None, ns))
+| step :: path ->
+  Names.update step begin function
+  | None -> Some (Branch (None, qualify path ns))
+  | Some Leaf v -> Some (Branch (Some v, qualify path ns))
+  | Some Branch (v, globals) -> Some (Branch (v, import path id ns globals))
   end
 
 let rec remove path id = match path with

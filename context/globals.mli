@@ -21,11 +21,27 @@ val qualify: Ident.t list -> 'a t -> 'a t
     replace them. Instead, their De Bruijn indices are shifted upward. *)
 val add: Ident.t list -> Ident.t -> 'a -> 'a t -> 'a t
 
-(** [import path globals' globals] imports all the bindings of [globals'] into
+(** [includ path globals' globals] includes all the bindings of [globals'] into
     [globals], qualifying them by [path], as if each entry had been {!val:add}ed
     to [globals] in the same order as they were {!val:add}ed to [globals'].
-    Previous bindings are shadowed but not replaced. *)
-val import: Ident.t list -> 'a t -> 'a t -> 'a t
+    Previous bindings are shadowed but not replaced. This is distinct from an
+    import in the sense that all previous bindings at [path] are merged with all
+    new bindings in [globals']. @see {!val:import} for more details. *)
+val includ: Ident.t list -> 'a t -> 'a t -> 'a t
+
+(** [import path id globals' globals] imports all the bindings of [globals']
+    into [globals], by assigning all of [globals'] bindings to the namespace
+    [path :: ident]. Where [includ (path :: id) globals' globals] merges the
+    bindings of [globals'] with those already present at the prefix [path ::
+    id], [import] instead shadows all bindings at this path, such that none of
+    them are accessible at De Bruijn index zero. To access the old bindings via
+    a global variable, the indexed path [path :: id] must have its last
+    component's index increased by one. This operation is similar to defining
+    a module [module M = ...] in OCaml which shadows some module [M] which was
+    inherited from a module [open]. Of particular note, the entire old module
+    [M] is shadowed, along with all its bindings. By contrast, an [includ] would
+    merge the bindings of the new [M] and the old [M]. *)
+val import: Ident.t list -> Ident.t -> 'a t -> 'a t -> 'a t
 
 (** [remove path id globals] removes the last binding to be associated with [id]
     qualified by [path]. Any previous bindings have their indices shifted
