@@ -75,6 +75,15 @@ let get i locals = match get_opt i locals with
 
 let mem i locals = Pool.mem i locals.pool
 
+let fix_opt (type l) (local: l Local.t) (locals: 'a t) =
+  Local.Pool.to_level_opt locals.pool local
+  |> Option.map (fun l -> Local.Level l)
+
+let fix local locals =
+  match fix_opt local locals with
+  | None -> raise Not_found
+  | Some local -> local
+
 let iter f xs = List.iter f xs.elts
 
 let iteri f xs = List.iteri (fun i -> f (Local.Index.of_int i)) xs.elts

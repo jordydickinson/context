@@ -79,6 +79,14 @@ val ith_opt: index -> 'a t -> 'a option
     exception. *)
 val lth_opt: level -> 'a t -> 'a option
 
+(** [fix local locals] is the leveled equivalent of [local] in [locals] or
+    @raise Failure if [local] is not in [locals]. *)
+val fix: 'l Local.t -> 'a t -> Local.leveled
+
+(** [fix_opt] is like {!val:fix}, but returns [None] rather than raising an
+    exception. *)
+val fix_opt: 'l Local.t -> 'a t -> Local.leveled option
+
 val iter: ('a -> unit) -> 'a t -> unit
 
 val iteri: (index -> 'a -> unit) -> 'a t -> unit
