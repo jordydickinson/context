@@ -20,6 +20,8 @@ let pool locals = locals.pool
 
 let elts locals = locals.elts
 
+let length xs = Pool.size xs.pool
+
 let add x locals =
   let elts = x :: locals.elts
   and pool = Pool.fill locals.pool in

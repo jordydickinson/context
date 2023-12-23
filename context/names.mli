@@ -75,6 +75,11 @@ val find_opt: _ Name.t -> 'a t -> 'a option
     [false] otherwise. *)
 val mem: _ Name.t -> 'a t -> bool
 
+(** [to_ident_map names] is a mapping from all the identifiers in [names] to
+    their bindings or @raise Invalid_arg if an identifier in [names] has
+    multiple bindings (i.e., it's shadowed). *)
+val to_ident_map: 'a t -> 'a Ident.Map.t
+
 (** [iter f names] iterates over the bindings in [names], applying [f] to each
     binding. Identifiers are traversed in lexicographically increasing order,
     and for each identifier, bindings are traversed from most-recently to least-

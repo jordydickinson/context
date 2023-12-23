@@ -20,6 +20,9 @@ val elts: 'a t -> 'a list
 (** [pool locals] is the pool of variables associated with [locals]. *)
 val pool: 'a t -> pool
 
+(** [length locals] is the number of elements in [locals]. *)
+val length: 'a t -> int
+
 (** [add v locals] is [locals] with [v] added at De Bruijn index 0, and all
     other entries shifted upward by one. *)
 val add: 'a -> 'a t -> 'a t

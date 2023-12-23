@@ -62,6 +62,13 @@ let import names = names |> Ident.Map.union begin fun _ locals1 locals2 ->
   Some (List.fold_left (Fun.flip Locals.add) locals2 locals1.elts)
 end
 
+let to_ident_map names =
+  names |> Ident.Map.map begin fun locals ->
+    assert (not @@ Locals.is_empty locals);
+    if Locals.length locals <> 1 then invalid_arg "Shadowed binding";
+    Locals.top locals
+  end
+
 let iter f = Ident.Map.iter (fun id locals -> Locals.iteri (f id) locals)
 
 let fold_left f init names =
