@@ -62,6 +62,8 @@ let import names = names |> Ident.Map.union begin fun _ locals1 locals2 ->
   Some (List.fold_left (Fun.flip Locals.add) locals2 locals1.elts)
 end
 
+let of_ident_map idents = Ident.Map.map Locals.singleton idents
+
 let to_ident_map names =
   names |> Ident.Map.map begin fun locals ->
     assert (not @@ Locals.is_empty locals);

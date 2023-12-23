@@ -75,6 +75,10 @@ val find_opt: _ Name.t -> 'a t -> 'a option
     [false] otherwise. *)
 val mem: _ Name.t -> 'a t -> bool
 
+(** [of_ident_map idents] is [idents] with every key given De Bruijn index zero.
+  *)
+val of_ident_map: 'a Ident.Map.t -> 'a t
+
 (** [to_ident_map names] is a mapping from all the identifiers in [names] to
     their bindings or @raise Invalid_arg if an identifier in [names] has
     multiple bindings (i.e., it's shadowed). *)
