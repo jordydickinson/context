@@ -88,6 +88,25 @@ let fold_right f = Ident.Map.fold begin fun id locals acc ->
   |> snd
 end
 
+let combine names1 names2 =
+  List.map2
+    begin fun (id1, locals1) (id2, locals2) ->
+      if not @@ Ident.equal id1 id2 then invalid_arg "Differing bindings";
+      id1, Locals.combine locals1 locals2
+    end
+    (Ident.Map.bindings names1)
+    (Ident.Map.bindings names2)
+  |> Ident.Map.of_list
+
+let iter2 f names1 names2 =
+  List.iter2
+    begin fun (id1, locals1) (id2, locals2) ->
+      if not @@ Ident.equal id1 id2 then invalid_arg "Differing bindings";
+      Locals.iteri2 (f id1) locals1 locals2
+    end
+    (Ident.Map.bindings names1)
+    (Ident.Map.bindings names2)
+
 let find_opt name names = match Ident.Map.find_opt (Name.ident name) names with
 | None -> None
 | Some locals -> Locals.get_opt (Name.to_local name) locals

@@ -90,6 +90,26 @@ let iteri f xs = List.iteri (fun i -> f (Local.Index.of_int i)) xs.elts
 
 let map f xs = { xs with elts = List.map f xs.elts }
 
+let combine xs ys =
+  if not @@ Pool.equal xs.pool ys.pool then invalid_arg "Differing bindings";
+  { xs with elts = List.combine xs.elts ys.elts }
+
+let iter2 f xs ys = List.iter2 f xs.elts ys.elts
+
+let iteri2 f xs ys =
+  let rec iteri2' i xs ys = match xs, ys with
+  | [], [] -> ()
+  | [], _ | _, [] -> invalid_arg "Differing bindings"
+  | x :: xs, y :: ys ->
+    f (Local.Index.of_int i) x y;
+    iteri2' (i + 1) xs ys
+  in
+  iteri2' 0 xs.elts ys.elts
+
+let map2 f xs ys =
+  if not @@ Pool.equal xs.pool ys.pool then invalid_arg "Differing bindings";
+  { xs with elts = List.map2 f xs.elts ys.elts }
+
 let find pred locals = List.find pred locals.elts
 
 let find_opt pred locals = List.find_opt pred locals.elts

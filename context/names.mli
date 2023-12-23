@@ -94,6 +94,22 @@ val fold_left: (Ident.t -> index -> 'acc -> 'a -> 'acc) -> 'acc -> 'a t -> 'acc
     identifier is not. *)
 val fold_right: (Ident.t -> level -> 'a -> 'acc -> 'acc) -> 'a t -> 'acc -> 'acc
 
+(** [combine names1 names2] combines the bindings of [names1] and [names2] such
+    that for all [n], [a], and [b], if [names1] associates [a] with name [n] and
+    [names2] associates [b] with the same [n], then [combine names1 names2]
+    associates [n] with [a, b].
+    
+    @raise Invalid_arg if there exists some name [n] bound in [names1] (or
+      [names2]) which is not bound in [names2] (or [names1]). *)
+val combine: 'a t -> 'b t -> ('a * 'b) t
+
+(** [iter2 f names1 names2] is functionally equivalent to [combine names1 names2
+    |> iter (fun id i (a, b) -> f id i a b)].
+    
+    @raise Invalid_arg if there exists some name [n] bound in [names1] (or
+      [names2]) which is not bound in [names2] (or [names1]). *)
+val iter2: (Ident.t -> index -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
+
 (** [pool id names] is the pool of De Bruijn indices/levels associated with the
     identifier [id] in [names]. *)
 val pool: Ident.t -> 'a t -> Local.pool

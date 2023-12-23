@@ -93,6 +93,20 @@ val iteri: (index -> 'a -> unit) -> 'a t -> unit
 
 val map: ('a -> 'b) -> 'a t -> 'b t
 
+(** [combine locals1 locals2] combines the bindings of [locals1] and [locals2]
+    such that if local [l] is bound to [a] in [locals1] and [b] in [locals2]
+    then [combine locals1 locals2] binds [a, b] to [l].
+    
+    @raise [Invalid_argument] if there exists some local [l] bound in [locals1]
+      (or [locals2]) which is not bound in [locals2] (or [locals1]). *)
+val combine: 'a t -> 'b t -> ('a * 'b) t
+
+val iter2: ('a -> 'b -> unit) -> 'a t -> 'b t -> unit
+
+val iteri2: (index -> 'a -> 'b -> unit) -> 'a t -> 'b t -> unit
+
+val map2: ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
+
 val find: ('a -> bool) -> 'a t -> 'a
 
 val find_opt: ('a -> bool) -> 'a t -> 'a option
