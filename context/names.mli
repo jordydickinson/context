@@ -80,6 +80,10 @@ val mem: _ Name.t -> 'a t -> bool
     multiple bindings (i.e., it's shadowed). *)
 val to_ident_map: 'a t -> 'a Ident.Map.t
 
+(** [map f names] is [names] with all bindings replaced by applying [f] to the
+    previous value. *)
+val map: ('a -> 'b) -> 'a t -> 'b t
+
 (** [iter f names] iterates over the bindings in [names], applying [f] to each
     binding. Identifiers are traversed in lexicographically increasing order,
     and for each identifier, bindings are traversed from most-recently to least-

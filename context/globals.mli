@@ -6,6 +6,9 @@ type +'a t
 (** [empty] contains no bindings *)
 val empty: 'a t
 
+(** [of_names names] contains all the bindings of [names]. *)
+val of_names: 'a Names.t -> 'a t
+
 (** [is_empty globals] is [true] if [globals] is empty and [false] otherwise. *)
 val is_empty: 'a t -> bool
 

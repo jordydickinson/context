@@ -69,6 +69,8 @@ let to_ident_map names =
     Locals.top locals
   end
 
+let map f = Ident.Map.map (Locals.map f)
+
 let iter f = Ident.Map.iter (fun id locals -> Locals.iteri (f id) locals)
 
 let fold_left f init names =

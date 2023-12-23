@@ -10,6 +10,8 @@ let empty = Names.empty
 
 let is_empty = Names.is_empty
 
+let of_names names = Names.map (fun x -> Leaf x) names
+
 let rec singleton path id v = match path with
 | [] -> Names.singleton id (Leaf v)
 | step :: path -> Names.singleton step (Branch (None, singleton path id v))
