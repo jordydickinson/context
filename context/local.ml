@@ -38,6 +38,8 @@ struct
     i - 1
 
   let of_level ~size i = size - (i + 1)
+
+  let shift ?(min = 0) ~amt i = if i >= min then i + amt else i
 end
 
 module Level =

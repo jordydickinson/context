@@ -37,6 +37,10 @@ sig
   (** [to_int i] is a non-negative integer with the same value as [i]. *)
   val to_int: t -> int
 
+  (** [shift ?min ~amt i] is [i] shifted upwards by [amt] iff it is greater than
+      or equal to [min]. If [min] is not provided it defaults to [0]. *)
+  val shift: ?min:t -> amt:int -> t -> t
+
   include Equatable.S with type t := t
   include Comparable.S with type t := t
 end
