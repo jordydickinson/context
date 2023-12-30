@@ -27,6 +27,17 @@ val length: 'a t -> int
     other entries shifted upward by one. *)
 val add: 'a -> 'a t -> 'a t
 
+(** [of_list elts] is a local context with each member of [elts] bound. The head
+    of [elts] is given De Bruijn index 0, the next element given index 1, and so
+    on. *)
+val of_list: 'a list -> 'a t
+
+(** [append locals locals'] contains all the bindings of [locals] and [locals'].
+    All entries in [locals] have the same De Bruijn indices in [append locals
+    locals'], but the indices of entries of [locals'] are shifted upward by the
+    size of [locals]. *)
+val append: 'a t -> 'a t -> 'a t
+
 (** [singleton v] is functionally equivalent to [add v empty]. *)
 val singleton: 'a -> 'a t
 

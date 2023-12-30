@@ -27,6 +27,15 @@ let add x locals =
   and pool = Pool.fill locals.pool in
   { elts; pool }
 
+let of_list elts =
+  let pool = Pool.fill ~amt:(List.length elts) Pool.empty in
+  { elts; pool }
+
+let append locals locals' =
+  let elts = locals.elts @ locals'.elts in
+  let pool = Pool.fill ~amt:(Pool.size locals'.pool) locals.pool in
+  { elts; pool }
+
 let singleton x = add x empty
 
 let top_opt locals = match locals.elts with
