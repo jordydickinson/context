@@ -27,6 +27,8 @@ let add x locals =
   and pool = Pool.fill locals.pool in
   { elts; pool }
 
+let add_all xs locals = List.fold_left (Fun.flip add) locals xs
+
 let of_list elts =
   let pool = Pool.fill ~amt:(List.length elts) Pool.empty in
   { elts; pool }

@@ -27,6 +27,11 @@ val length: 'a t -> int
     other entries shifted upward by one. *)
 val add: 'a -> 'a t -> 'a t
 
+(** [add_all vs locals] is [locals] extended with entries for all the elements
+    of [vs]. This is semantically equivalent to [List.fold_left (Fun.flip add)
+    locals vs]. *)
+val add_all: 'a list -> 'a t -> 'a t
+
 (** [of_list elts] is a local context with each member of [elts] bound. The head
     of [elts] is given De Bruijn index 0, the next element given index 1, and so
     on. *)
