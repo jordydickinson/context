@@ -35,8 +35,8 @@ let find_index_opt i scope =
   Option.bind l (Fun.flip find_level_opt scope)
 
 let find_opt (type a) : a Local.t -> _ = function
-| Level l -> find_level_opt l
-| Index i -> find_index_opt i
+| Leveled l -> find_level_opt l
+| Indexed i -> find_index_opt i
 
 let find i scope = match find_opt i scope with
 | None -> raise Not_found
@@ -49,8 +49,8 @@ let remove_index i scope = match Pool.level_of_index_opt scope.pool i with
 | Some l -> remove_level l scope
 
 let remove (type a) : a Local.t -> _ = function
-| Level l -> remove_level l
-| Index i -> remove_index i
+| Leveled l -> remove_level l
+| Indexed i -> remove_index i
 
 let update_level l f scope =
   if not @@ Pool.mem_level l scope.pool then scope else
@@ -61,5 +61,5 @@ let update_index i f scope = match Pool.level_of_index_opt scope.pool i with
 | Some l -> update_level l f scope
 
 let update (type a) : a Local.t -> _ = function
-| Level l -> update_level l
-| Index i -> update_index i
+| Leveled l -> update_level l
+| Indexed i -> update_index i

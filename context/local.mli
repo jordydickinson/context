@@ -1,16 +1,16 @@
 (** De Bruijn indices *)
-type index
+type index = private Index of int
 
 (** De Bruijn levels *)
-type level
+type level = private Level of int
 
 (** "Pools" of debruijn indices/levels, for conversion *)
-type pool
+type pool = private Pool of int
 
 (** A De Bruijn index or level *)
 type _ t =
-| Index : index -> index t
-| Level : level -> level t
+| Indexed : index -> index t
+| Leveled : level -> level t
 
 type indexed = index t
 type leveled = level t

@@ -23,8 +23,8 @@ let ident (type a) : a t -> _ = function
 | Leveled (id, _) -> id
 
 let to_local (type a) : a t -> a Local.t = function
-| Indexed (_, i) -> Index i
-| Leveled (_, l) -> Level l
+| Indexed (_, i) -> Indexed i
+| Leveled (_, l) -> Leveled l
 
 let drop_ident (type a) : a t -> a = function
 | Indexed (_, i) -> i
@@ -32,9 +32,7 @@ let drop_ident (type a) : a t -> a = function
 
 let equal (type a) (x: a t) (y: a t) : bool = match x, y with
 | Indexed (id, i), Indexed (id', i') -> Ident.equal id id' && Index.equal i i'
-| Indexed _, _ -> false
 | Leveled (id, l), Leveled (id', l') -> Ident.equal id id' && Level.equal l l'
-| Leveled _, _ -> false
 
 let compare (type a) (x: a t) (y: a t) : int =
   let cmp_id = Ident.compare (ident x) (ident y) in

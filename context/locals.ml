@@ -77,8 +77,8 @@ let lth l locals = match lth_opt l locals with
 | Some v -> v
 
 let get_opt (type a) : a Local.t -> _ = function
-| Index i -> ith_opt i
-| Level l -> lth_opt l
+| Indexed i -> ith_opt i
+| Leveled l -> lth_opt l
 
 let get i locals = match get_opt i locals with
 | None -> raise Not_found
@@ -88,7 +88,7 @@ let mem i locals = Pool.mem i locals.pool
 
 let fix_opt (type l) (local: l Local.t) (locals: 'a t) =
   Local.Pool.to_level_opt locals.pool local
-  |> Option.map (fun l -> Local.Level l)
+  |> Option.map (fun l -> Local.Leveled l)
 
 let fix local locals =
   match fix_opt local locals with
