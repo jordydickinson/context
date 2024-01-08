@@ -39,16 +39,32 @@ let compare (type a) (x: a t) (y: a t) : int =
   if cmp_id <> 0 then cmp_id else
   Local.compare (to_local x) (to_local y)
 
+let hash (type a) : a t -> int = function
+| Indexed (id, i) ->
+  let hindexed = Int.hash 0 in
+  let hid = Ident.hash id in
+  let hi = Local.Index.hash i in
+  hash_combine hindexed hid
+  |> hash_combine hi
+| Leveled (id, l) ->
+  let hleveled = Int.hash 1 in
+  let hid = Ident.hash id in
+  let hl = Local.Level.hash l in
+  hash_combine hleveled hid
+  |> hash_combine hl
+
 module Indexed = struct
   module T = struct
     type t = indexed
 
     let equal = equal
     let compare = compare
+    let hash = hash
   end
   include T
 
   include Comparable.Make (T)
+  include Hashable.Make (T)
 end
 
 module Leveled = struct
@@ -57,10 +73,12 @@ module Leveled = struct
 
     let equal = equal
     let compare = compare
+    let hash = hash
   end
   include T
 
   include Comparable.Make (T)
+  include Hashable.Make (T)
 end
 
 module Space = struct
