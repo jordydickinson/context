@@ -16,11 +16,14 @@ val make: 'a Name.t list -> 'a Name.t -> 'a t
 
 val compare: 'a t -> 'a t -> int
 
+val hash: 'a t -> int
+
 module Indexed: sig
   type t = indexed
 
   include Equatable.S with type t := t
   include Comparable.S with type t := t
+  include Hashable.S with type t := t
 end
 
 module Leveled: sig
@@ -28,4 +31,5 @@ module Leveled: sig
 
   include Equatable.S with type t := t
   include Comparable.S with type t := t
+  include Hashable.S with type t := t
 end

@@ -21,16 +21,23 @@ let compare q q' =
   if cmp_path <> 0 then cmp_path else
   Name.compare q.name q'.name
 
+let hash q =
+  let hpath = List.hash Name.hash q.path in
+  let hname = Name.hash q.name in
+  hash_combine hpath hname
+
 module Indexed = struct
   module T = struct
     type t = indexed
 
     let equal = equal
     let compare = compare
+    let hash = hash
   end
   include T
 
   include Comparable.Make (T)
+  include Hashable.Make (T)
 end
 
 module Leveled = struct
@@ -39,8 +46,10 @@ module Leveled = struct
 
     let equal = equal
     let compare = compare
+    let hash = hash
   end
   include T
 
   include Comparable.Make (T)
+  include Hashable.Make (T)
 end
