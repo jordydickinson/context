@@ -4,7 +4,7 @@ type t =
   }
 
 include Equatable.S with type t := t
+include Comparable.S with type t := t
+include Hashable.S with type t := t
 
 val make: Ident.t list -> Ident.t -> t
-
-val compare: t -> t -> int
