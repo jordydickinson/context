@@ -17,6 +17,10 @@ let compare (type a) (db: a t) (db': a t) = match db, db' with
 | Leveled Level l, Leveled Level l' -> Int.compare l l'
 | Indexed Index i, Indexed Index i' -> Int.compare i i'
 
+let hash (type a) (db: a t) = match db with
+| Leveled Level l -> Int.hash l
+| Indexed Index i -> Int.hash i
+
 module Index =
 struct
   module T = struct
@@ -25,9 +29,12 @@ struct
     let equal (Index i1) (Index i2) = Int.equal i1 i2
 
     let compare (Index i1) (Index i2) = Int.compare i1 i2
+
+    let hash (Index i) = Int.hash i
   end
   include T
   include Comparable.Make(T)
+  include Hashable.Make(T)
 
   let of_int i = Index i
 
@@ -54,9 +61,12 @@ struct
     let equal (Level i1) (Level i2) = Int.equal i1 i2
 
     let compare (Level i1) (Level i2) = Int.compare i1 i2
+
+    let hash (Level i) = Int.hash i
   end
   include T
   include Comparable.Make(T)
+  include Hashable.Make(T)
 
   let zero = Level 0
 

@@ -16,6 +16,7 @@ type indexed = index t
 type leveled = level t
 
 val compare : 'a t -> 'a t -> int
+val hash: 'a t -> int
 
 include Equatable.S1 with type 'a t := 'a t
 
@@ -43,6 +44,7 @@ sig
 
   include Equatable.S with type t := t
   include Comparable.S with type t := t
+  include Hashable.S with type t := t
 end
 
 module Level:
@@ -57,6 +59,7 @@ sig
 
   include Equatable.S with type t := t
   include Comparable.S with type t := t
+  include Hashable.S with type t := t
 end
 
 module Pool:
