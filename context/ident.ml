@@ -14,3 +14,9 @@ include Comparable.Make (struct
   type nonrec t = t
   let compare = String.compare
 end)
+
+include Hashable.Make (struct
+  type nonrec t = t
+  let equal = equal
+  let hash = String.hash
+end)
