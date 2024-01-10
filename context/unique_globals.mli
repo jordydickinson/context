@@ -49,6 +49,19 @@ val import: Unique_global.t -> 'a t -> 'a t -> 'a t
 val merge: (Unique_global.t -> 'a option -> 'b option -> 'c option)
   -> 'a t -> 'b t -> 'c t
 
+(** [union f globals globals'] computes a global environment whose keys are a
+    subset of the union of the keys of [globals] and [globals']. When the same
+    binding is defined in both arguments, the function f is used to combine
+    them. This is a special case of {!val:merge}: [union f globals globals'] is
+    equivalent to [merge f' globals globals'], where
+
+    - [f' _key None None = None]
+    - [f' _key (Some v) None = Some v]
+    - [f' _key None (Some v) = Some v]
+    - [f' key (Some v1) (Some v2) = f key v1 v2]  
+  *)
+val union: (Unique_global.t -> 'a -> 'a -> 'a option) -> 'a t -> 'a t -> 'a t
+
 (** [remove qname globals] removes the last binding to be associated with
     [qname]. If no such binding exists, [globals] is returned unchanged. *)
 val remove: Unique_global.t -> 'a t -> 'a t

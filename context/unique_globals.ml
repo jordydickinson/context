@@ -126,6 +126,11 @@ let merge f =
   in
   merge' []
 
+let union f = merge begin fun g v v' -> match v, v' with
+| None, None -> None
+| None, Some v | Some v, None -> Some v
+| Some v, Some v' -> f g v v'
+end
 
 let rec remove Unique_global.{ path; ident } = match path with
 | [] ->
