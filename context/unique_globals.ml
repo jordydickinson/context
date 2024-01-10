@@ -48,6 +48,85 @@ let rec import Unique_global.{ path; ident } ns = match path with
   | Some Branch (v, globals) -> Some (Branch (v, import { path; ident } ns globals))
   end
 
+let merge f =
+  let rec merge' path =
+    Ident.Map.merge begin fun id entry entry' ->
+      let g = Unique_global.make path id in
+      match entry, entry' with
+    | None, None -> Option.map (fun v -> Leaf v) (f g None None)
+    | None, Some Leaf v -> Option.map (fun v -> Leaf v) (f g None (Some v))
+    | None, Some Branch (None, globals) ->
+      let globals = merge' (path @ [id]) empty globals in
+      if is_empty globals then None else Some (Branch (None, globals))
+    | None, Some Branch (Some v, globals) ->
+      let globals = merge' (path @ [id]) empty globals in
+      let v = f g None (Some v) in
+      if is_empty globals
+      then Option.map (fun v -> Leaf v) v
+      else Some (Branch (v, globals))
+    | Some Leaf v, None -> Option.map (fun v -> Leaf v) (f g (Some v) None)
+    | Some Leaf v, Some Leaf v' -> Option.map (fun v -> Leaf v) (f g (Some v) (Some v'))
+    | Some Leaf v, Some Branch (None, globals) ->
+      let globals = merge' (path @ [id]) empty globals in
+      let v = f g (Some v) None in
+      if is_empty globals
+      then Option.map (fun v -> Leaf v) v
+      else Some (Branch (v, globals))
+    | Some Leaf v, Some Branch (Some v', globals) ->
+      let globals = merge' (path @ [id]) empty globals in
+      let v = f g (Some v) (Some v') in
+      if is_empty globals
+      then Option.map (fun v -> Leaf v) v
+      else Some (Branch (v, globals))
+    | Some Branch (None, globals), None ->
+      let globals = merge' (path @ [id]) globals empty in
+      if is_empty globals
+      then None
+      else Some (Branch (None, globals))
+    | Some Branch (None, globals), Some Leaf v ->
+      let globals = merge' (path @ [id]) globals empty in
+      let v = f g None (Some v) in
+      if is_empty globals
+      then Option.map (fun v -> Leaf v) v
+      else Some (Branch (v, globals))
+    | Some Branch (None, globals), Some Branch (None, globals') ->
+      let globals = merge' (path @ [id]) globals globals' in
+      if is_empty globals then None else Some (Branch (None, globals))
+    | Some Branch (None, globals), Some Branch (Some v, globals') ->
+      let globals = merge' (path @ [id]) globals globals' in
+      let v = f g None (Some v) in
+      if is_empty globals
+      then Option.map (fun v -> Leaf v) v
+      else Some (Branch (v, globals))
+    | Some Branch (Some v, globals), None ->
+      let globals = merge' (path @ [id]) globals empty in
+      let v = f g (Some v) None in
+      if is_empty globals
+      then Option.map (fun v -> Leaf v) v
+      else Some (Branch (v, globals))
+    | Some Branch (Some v, globals), Some Leaf v' ->
+      let globals = merge' (path @ [id]) globals empty in
+      let v = f g (Some v) (Some v') in
+      if is_empty globals
+      then Option.map (fun v -> Leaf v) v
+      else Some (Branch (v, globals))
+    | Some Branch (Some v, globals), Some Branch (None, globals') ->
+      let globals = merge' (path @ [id]) globals globals' in
+      let v = f g (Some v) None in
+      if is_empty globals
+      then Option.map (fun v -> Leaf v) v
+      else Some (Branch (v, globals))
+    | Some Branch (Some v, globals), Some Branch (Some v', globals') ->
+      let globals = merge' (path @ [id]) globals globals' in
+      let v = f g (Some v) (Some v') in
+      if is_empty globals
+      then Option.map (fun v -> Leaf v) v
+      else Some (Branch (v, globals))
+    end
+  in
+  merge' []
+
+
 let rec remove Unique_global.{ path; ident } = match path with
 | [] ->
   Ident.Map.update ident begin function

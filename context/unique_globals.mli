@@ -41,6 +41,14 @@ val includ: Ident.t list -> 'a t -> 'a t -> 'a t
     merge the bindings of the new [M] and the old [M]. *)
 val import: Unique_global.t -> 'a t -> 'a t -> 'a t
 
+(** [merge f globals globals'] computes a global environment whose keys are a
+    subset of the union of the keys of [globals] and [globals']. For each key
+    [g] in at least one of [globals] and [globals'], [f g x y] determines the
+    value in the resultant global environment, where [x] and [y] are the
+    bindings corresponding to [g] in [globals] and [globals'] respectively. *)
+val merge: (Unique_global.t -> 'a option -> 'b option -> 'c option)
+  -> 'a t -> 'b t -> 'c t
+
 (** [remove qname globals] removes the last binding to be associated with
     [qname]. If no such binding exists, [globals] is returned unchanged. *)
 val remove: Unique_global.t -> 'a t -> 'a t
