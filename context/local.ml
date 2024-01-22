@@ -84,6 +84,14 @@ struct
 
   let is_empty (Pool pool) = pool = 0
 
+  let to_index_set (Pool p) =
+    let rec to_index_set' i is =
+      if i < 0 then is else
+      let is = Index.Set.add (Index i) is in
+      to_index_set' (i - 1) is
+    in
+    to_index_set' (p - 1) Index.Set.empty
+
   let equal (Pool p1) (Pool p2) = Int.equal p1 p2
 
   let subpool (Pool p1) (Pool p2) = p1 < p2

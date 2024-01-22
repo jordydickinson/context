@@ -73,6 +73,9 @@ sig
   (** Test whether a pool is empty *)
   val is_empty: t -> bool
 
+  (** [to_index_set pool] is the set of all indices in [pool]. *)
+  val to_index_set: t -> Index.Set.t
+
   (** [subpool pool1 pool2] is [true] if [pool1] contains all the variables
       present in [pool2] and [false] otherwise. *)
   val subpool: t -> t -> bool
